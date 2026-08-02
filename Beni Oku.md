@@ -1,5 +1,7 @@
 # 🗑️ Voldena Program Kaldırıcı
 
+[🇺🇸 English version](README.md)
+
 Uygulamaları sisteminizden tamamen kaldırmak, kayıt defteri kalıntılarını ve artık dosyaları derinlemesine temizlemek için tasarlanmış modern ve hızlı bir Windows program kaldırıcı aracı.
 
 ## ✨ Özellikler
@@ -10,4 +12,4 @@ Uygulamaları sisteminizden tamamen kaldırmak, kayıt defteri kalıntılarını
 
 ---
 
-[Efe Kızmaz](https://github.com/yavuzefekizmaz) tarafından ❤️ ile yapıldı
+[Efe Kızmaz](https://github.com/yavuzefekizmaz) tarafından geliştirilmiştir.

@@ -1,5 +1,7 @@
 # 🗑️ Voldena Uninstaller
 
+[🇹🇷 Türkçe sürüm](Beni%20Oku.md)
+
 A modern and fast Windows desktop uninstaller utility that helps fully uninstall applications and clean up leftover files and registry keys.
 
 ## ✨ Features
