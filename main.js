@@ -198,6 +198,7 @@ if (Test-Path $uninsPath1) {
                     let cmd = app.quietUninstallString || app.uninstallString;
                     if (cmd) {
                         cmd = cmd.replace(/\\/g, '\\\\');
+                        cmd = cmd.replace(/'/g, "''"); // Escape single quotes for PowerShell!
                         psScript += `
 Write-Log "Kaldırma komutu çalıştırılıyor..."
 try {
