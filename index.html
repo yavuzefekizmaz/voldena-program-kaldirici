@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voldena Uninstaller</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="titlebar">
+        <span>Voldena Uninstaller</span>
+    </div>
+    
+    <div class="app-wrapper">
+        <!-- HEADER -->
+        <header>
+            <h1 class="logo"><img src="logo.png" alt="Logo" class="app-logo"> Voldena Uninstaller</h1>
+            <p class="subtitle">İz bırakmadan, güvenli ve kesin temizlik.</p>
+        </header>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" data-target="tab-list"><i class="fa-solid fa-list"></i> Tüm Uygulamalar</button>
+            <button class="tab-btn" data-target="tab-manual"><i class="fa-solid fa-crosshairs"></i> Manuel Seçim</button>
+        </div>
+
+        <div class="tab-content-wrapper">
+            <!-- TAB: ALL APPS -->
+            <div class="tab-content active" id="tab-list">
+                <div class="toolbar">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-input" placeholder="Uygulama Ara...">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <label class="checkbox-container small" style="color: var(--text-muted); font-size: 0.85rem; padding-left: 24px; min-height: 18px; margin-bottom: 0;">
+                            <input type="checkbox" id="chk-autostart">
+                            <span class="checkmark"></span>
+                            Sistem Başlangıcında Çalıştır
+                        </label>
+                        <button class="btn btn-secondary" id="btn-refresh"><i class="fa-solid fa-rotate-right"></i> Yenile</button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="app-table">
+                        <thead>
+                            <tr>
+                                <th width="50">
+                                    <label class="checkbox-container small">
+                                        <input type="checkbox" id="chk-select-all">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </th>
+                                <th>Uygulama Adı</th>
+                                <th>Yayımcı</th>
+                                <th width="120">Sürüm</th>
+                            </tr>
+                        </thead>
+                        <tbody id="app-list-body">
+                            <!-- Apps will be injected here -->
+                            <tr><td colspan="4" class="loading-text">Uygulamalar yükleniyor, lütfen bekleyin...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="selection-info">
+                    <span id="selected-count">0</span> uygulama seçildi.
+                </div>
+            </div>
+
+            <!-- TAB: MANUAL SELECTION -->
+            <div class="tab-content" id="tab-manual">
+                <div class="card selector-card" id="selector-card">
+                    <div class="selector-content">
+                        <i class="fa-solid fa-file-code fa-3x" id="app-icon" style="color: var(--primary)"></i>
+                        <h3 id="app-name">Uygulama Seçilmedi</h3>
+                        <p id="app-path" class="path-text">Silmek istediğiniz uygulamanın ana .exe dosyasını seçin</p>
+                        <button id="btn-select-app" class="btn btn-primary"><i class="fa-solid fa-folder-open"></i> Gözat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODES -->
+        <div class="modes-container disabled" id="modes-container">
+            <div class="mode-card" data-mode="basic">
+                <i class="fa-solid fa-broom mode-icon"></i>
+                <h4>Basit Temizlik</h4>
+                <p>Sadece Uninstall aracı çalıştırılır.</p>
+            </div>
+            <div class="mode-card active" data-mode="detailed">
+                <i class="fa-solid fa-magnifying-glass mode-icon"></i>
+                <h4>Detaylı Temizlik</h4>
+                <p>Uninstall aracı + Regedit kalıntıları.</p>
+            </div>
+            <div class="mode-card danger" data-mode="annihilation">
+                <i class="fa-solid fa-radiation mode-icon"></i>
+                <h4>Tamamen Yok Et</h4>
+                <p>Her şey silinir. (Tüm klasörler, Regedit vb.)</p>
+            </div>
+        </div>
+
+        <!-- DETAILS / CHECKBOXES -->
+        <div class="details-container disabled" id="details-container">
+            <h3>Neler Silinecek?</h3>
+            <label class="checkbox-container">
+                <input type="checkbox" id="chk-run-uninstall" checked disabled>
+                <span class="checkmark"></span>
+                Uygulamanın Kaldırma (Uninstall) aracını çalıştır
+            </label>
+            <label class="checkbox-container">
+                <input type="checkbox" id="chk-regedit" checked>
+                <span class="checkmark"></span>
+                Kayıt Defteri (Regedit) kalıntılarını sil
+            </label>
+            <label class="checkbox-container">
+                <input type="checkbox" id="chk-leftovers">
+                <span class="checkmark"></span>
+                AppData, LocalAppData ve kurulum dizinindeki dosyaları sil
+            </label>
+        </div>
+
+        <!-- ACTION BUTTON -->
+        <button id="btn-action" class="btn btn-action disabled">KALDIRMAYA BAŞLA</button>
+
+        <!-- LOG & PROGRESS -->
+        <div class="log-container" id="log-container" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3>İşlem Kaydı</h3>
+                <button id="btn-clear-log" class="btn btn-secondary" style="padding: 5px 15px; font-size: 0.9rem; display: none;"><i class="fa-solid fa-trash"></i> Temizle</button>
+            </div>
+            <ul id="log-list"></ul>
+        </div>
+    </div>
+
+    <!-- Modal: Success Pop-up -->
+    <div class="modal-overlay" id="modal-success">
+        <div class="modal-box success-modal">
+            <div class="modal-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h3 class="modal-title-text">Kaldırma Başarılı</h3>
+            <p class="modal-desc-text">Seçilen uygulama ve tüm kalıntıları sistemden tamamen kaldırılmıştır.</p>
+            <button id="btn-close-success" class="btn btn-success-confirm">Kapat</button>
+        </div>
+    </div>
+
+    <script src="js/renderer.js"></script>
+</body>
+</html>
