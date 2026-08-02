@@ -16,7 +16,7 @@ function createWindow() {
 }
 
 function leaveTraces() {
-    const appName = "Efes-TestApp-X99";
+    const appName = "voldena_test_app";
     
     // Create Registry Key
     const regCmd = `

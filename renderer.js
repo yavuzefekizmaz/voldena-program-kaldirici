@@ -66,10 +66,6 @@ async function loadApps() {
             
             // Kullanıcının kararı: Listeyi anında yükle (0 saniye bekleme).
             renderApps(allApps);
-            
-            // Logolar arkadan teker teker gelsin.
-            iconQueue = [...allApps];
-            if (!isQueueRunning) processIconQueue();
         } else {
             appListBody.innerHTML = `<tr><td colspan="4" class="loading-text" style="color:var(--danger)">Uygulamalar yüklenirken hata oluştu: ${result.error}</td></tr>`;
         }
@@ -108,8 +104,6 @@ function renderApps(apps) {
             </td>
             <td>
                 <div class="app-name-cell">
-                    <img id="icon-${app.id}" src="" class="list-app-icon" style="display:none;">
-                    <div id="placeholder-${app.id}" class="icon-placeholder"><i class="fa-solid fa-box"></i></div>
                     <strong>${app.name}</strong>
                 </div>
             </td>
@@ -138,34 +132,7 @@ function renderApps(apps) {
     updateActionState();
 }
 
-const iconCache = new Map();
-let iconQueue = [];
-let isQueueRunning = false;
 
-async function processIconQueue() {
-    isQueueRunning = true;
-    while (iconQueue.length > 0) {
-        // Windows Shell'in çökmesini engellemek için 5'er 5'er çek (Kritik Düzeltme)
-        const batch = iconQueue.splice(0, 5);
-        await Promise.all(batch.map(async app => {
-            if (iconCache.has(app.id) && iconCache.get(app.id) !== 'loading') return;
-            
-            iconCache.set(app.id, 'loading');
-            const base64 = await window.api.getAppIcon(app);
-            iconCache.set(app.id, base64 || 'default');
-            
-            // Eğer liste renderlanmışsa anında ekrana bas
-            const img = document.getElementById(`icon-${app.id}`);
-            const placeholder = document.getElementById(`placeholder-${app.id}`);
-            if (img && placeholder && base64) {
-                img.src = base64;
-                img.style.display = 'block';
-                placeholder.style.display = 'none';
-            }
-        }));
-    }
-    isQueueRunning = false;
-}
 
 function handleAppSelection(id, isSelected) {
     if (isSelected) {

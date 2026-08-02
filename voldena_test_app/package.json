@@ -1,5 +1,5 @@
 {
-  "name": "efes-testapp-x99",
+  "name": "voldena-test-app",
   "version": "1.0.0",
   "description": "Dummy app for testing the uninstaller",
   "main": "main.js",
@@ -7,22 +7,22 @@
     "start": "electron .",
     "build": "electron-builder --win --x64"
   },
-  "author": "Efes",
+  "author": "Voldena",
   "license": "ISC",
   "devDependencies": {
     "electron": "^30.0.0",
     "electron-builder": "^24.13.3"
   },
   "build": {
-    "appId": "com.efes.testappx99",
-    "productName": "Efes-TestApp-X99",
+    "appId": "com.voldena.testapp",
+    "productName": "Voldena Test App",
     "win": {
       "target": "nsis"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "uninstallDisplayName": "Efes-TestApp-X99"
+      "uninstallDisplayName": "Voldena Test App"
     }
   }
 }

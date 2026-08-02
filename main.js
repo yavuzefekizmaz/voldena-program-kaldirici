@@ -134,43 +134,7 @@ $apps | ConvertTo-Json -Depth 2 -Compress | Out-File -FilePath "${jsonPath}" -En
     });
 });
 
-// IPC Handler: Get Application Icon
-ipcMain.handle('app:getAppIcon', async (event, appInfo) => {
-    try {
-        let targetPath = null;
 
-        // 1. Check DisplayIcon
-        if (appInfo.displayIcon) {
-            let p = appInfo.displayIcon.replace(/"/g, '');
-            if (p.includes(',')) p = p.split(',')[0];
-            if (fs.existsSync(p)) targetPath = p;
-        }
-
-        // 2. Check UninstallString with Regex (handles arguments)
-        if (!targetPath && appInfo.uninstallString) {
-            const match = appInfo.uninstallString.match(/^"?([^"]+\.exe)"?/i);
-            if (match && fs.existsSync(match[1])) {
-                targetPath = match[1];
-            }
-        }
-
-        // 3. Fallback: async scan InstallLocation (non-blocking)
-        if (!targetPath && appInfo.installLocation && fs.existsSync(appInfo.installLocation)) {
-            try {
-                const files = await fs.promises.readdir(appInfo.installLocation);
-                const exe = files.find(f => f.toLowerCase().endsWith('.exe') && !f.toLowerCase().includes('unins'));
-                if (exe) targetPath = path.join(appInfo.installLocation, exe);
-            } catch (err) {}
-        }
-        
-        if (!targetPath || !fs.existsSync(targetPath)) return null;
-        
-        const icon = await app.getFileIcon(targetPath, { size: "normal" });
-        return icon.toDataURL();
-    } catch (e) {
-        return null;
-    }
-});
 
 // IPC Handler: Select an application (Manual Mode)
 ipcMain.handle('dialog:selectApp', async () => {
