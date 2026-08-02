@@ -1,0 +1,36 @@
+{
+  "name": "voldena-uninstaller",
+  "version": "1.0.0",
+  "description": "Modern and clean uninstaller for Windows",
+  "main": "js/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.voldena.uninstaller",
+    "productName": "Voldena Uninstaller",
+    "win": {
+      "icon": "logo.png",
+      "requestedExecutionLevel": "requireAdministrator",
+      "target": ["nsis", "portable"]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always",
+      "artifactName": "Voldena-Uninstaller-Setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "Voldena-Uninstaller-Portable.${ext}",
+      "requestExecutionLevel": "admin"
+    }
+  },
+  "author": "Voldena",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^26.8.1"
+  }
+}
