@@ -230,10 +230,21 @@ if (Test-Path $regPath) {
                 psScript += `
 $appName = "${app.name}"
 $appNameNoSpace = $appName -replace '\\s',''
+$appNameUnderscore = $appName -replace '\\s','_'
+$appNameLowerUnderscore = $appName.ToLower() -replace '\\s','_'
 $pathsToClean = @(
     "$env:APPDATA\\$appName",
+    "$env:APPDATA\\$appNameNoSpace",
+    "$env:APPDATA\\$appNameUnderscore",
+    "$env:APPDATA\\$appNameLowerUnderscore",
     "$env:LOCALAPPDATA\\$appName",
+    "$env:LOCALAPPDATA\\$appNameNoSpace",
+    "$env:LOCALAPPDATA\\$appNameUnderscore",
+    "$env:LOCALAPPDATA\\$appNameLowerUnderscore",
     "$env:LOCALAPPDATA\\Programs\\$appName",
+    "$env:LOCALAPPDATA\\Programs\\$appNameNoSpace",
+    "$env:LOCALAPPDATA\\Programs\\$appNameUnderscore",
+    "$env:LOCALAPPDATA\\Programs\\$appNameLowerUnderscore",
     "$env:LOCALAPPDATA\\$appName-updater",
     "$env:LOCALAPPDATA\\$appNameNoSpace-updater",
     "$env:USERPROFILE\\Desktop\\*$appName*.lnk",

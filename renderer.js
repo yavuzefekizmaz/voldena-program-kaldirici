@@ -34,6 +34,9 @@ const logContainer = document.getElementById('log-container');
 const logList = document.getElementById('log-list');
 const btnClearLog = document.getElementById('btn-clear-log');
 
+const modalSuccess = document.getElementById('modal-success');
+const btnCloseSuccess = document.getElementById('btn-close-success');
+
 // Initialization
 document.addEventListener('DOMContentLoaded', () => {
     loadApps();
@@ -326,18 +329,35 @@ btnAction.addEventListener('click', async () => {
             btnAction.style.boxShadow = "0 0 20px rgba(0,255,0,0.4)";
             btnAction.classList.remove('danger-mode');
             
-            // Eğer liste modundaysa silinenleri çıkarıp UI'ı tazeleyelim (daha doğrusu refresh isteyeceğiz)
-            if (isListTab) {
-                selectedApps.clear();
-                chkSelectAll.checked = false;
-            } else {
-                currentAppInfo = null;
-                appNameEl.textContent = "Uygulama Seçilmedi";
-                appPathEl.textContent = "Silmek istediğiniz uygulamanın ana .exe dosyasını seçin";
-                appIconEl.classList.remove('fa-box-open');
-                appIconEl.classList.add('fa-file-code');
-                appIconEl.style.color = 'var(--primary)';
-            }
+            // Show Success Modal
+            modalSuccess.classList.add('active');
+            
+            // Success Modal Close Handler
+            btnCloseSuccess.onclick = () => {
+                modalSuccess.classList.remove('active');
+                
+                // Restore UI
+                document.querySelector('.tab-content-wrapper').style.display = 'block';
+                document.querySelector('.tabs').style.display = 'flex';
+                btnAction.style.background = '';
+                btnAction.style.boxShadow = '';
+                logContainer.style.display = 'none';
+                logList.innerHTML = '';
+                
+                if (isListTab) {
+                    selectedApps.clear();
+                    chkSelectAll.checked = false;
+                    loadApps();
+                } else {
+                    currentAppInfo = null;
+                    appNameEl.textContent = "Uygulama Seçilmedi";
+                    appPathEl.textContent = "Silmek istediğiniz uygulamanın ana .exe dosyasını seçin";
+                    appIconEl.classList.remove('fa-box-open');
+                    appIconEl.classList.add('fa-file-code');
+                    appIconEl.style.color = 'var(--primary)';
+                }
+                updateActionState();
+            };
             
         } else {
             logList.innerHTML += `<li style="color:var(--danger)">[HATA] İşlem sırasında bir hata oluştu: ${result.error}</li>`;
@@ -349,26 +369,28 @@ btnAction.addEventListener('click', async () => {
             btnAction.textContent = "HATA OLUŞTU";
             btnAction.style.background = "var(--danger)";
             btnAction.classList.remove('danger-mode');
+            
+            // Restore UI immediately on error so logs are visible
+            document.querySelector('.tab-content-wrapper').style.display = 'block';
+            document.querySelector('.tabs').style.display = 'flex';
+            btnAction.style.background = '';
+            btnAction.style.boxShadow = '';
+            updateActionState();
         }
     } catch (err) {
         logList.innerHTML += `<li style="color:var(--danger)">[SİSTEM HATASI] Beklenmeyen bir hata oluştu: ${err.message}</li>`;
         btnAction.textContent = "HATA OLUŞTU";
         btnAction.style.background = "var(--danger)";
+        
+        // Restore UI immediately on error
+        document.querySelector('.tab-content-wrapper').style.display = 'block';
+        document.querySelector('.tabs').style.display = 'flex';
+        btnAction.style.background = '';
+        btnAction.style.boxShadow = '';
+        updateActionState();
     }
     
     btnClearLog.style.display = 'block'; // Show clear button after processing
-
-    // Biter bitmez arayüzü tekrar görünür yap
-    document.querySelector('.tab-content-wrapper').style.display = 'block';
-    document.querySelector('.tabs').style.display = 'flex';
-    btnAction.style.background = '';
-    btnAction.style.boxShadow = '';
-    
-    if (isListTab) {
-        loadApps();
-    }
-    updateActionState();
-    
     // Auto scroll down log
     logContainer.scrollTop = logContainer.scrollHeight;
 });
