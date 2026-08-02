@@ -20,25 +20,25 @@ function leaveTraces() {
     
     // Create Registry Key
     const regCmd = `
-        $regPath = "HKCU:\\Software\\${appName}"
+        $regPath = 'HKCU:\\Software\\${appName}'
         if (-not (Test-Path $regPath)) {
             New-Item -Path $regPath -Force | Out-Null
-            New-ItemProperty -Path $regPath -Name "DummyData" -Value "I am a trace!" -PropertyType String -Force | Out-Null
+            New-ItemProperty -Path $regPath -Name 'DummyData' -Value 'I am a trace!' -PropertyType String -Force | Out-Null
         }
         
         # Create AppData Dummy File
-        $appDataDir = "$env:APPDATA\\${appName}"
+        $appDataDir = Join-Path $env:APPDATA '${appName}'
         if (-not (Test-Path $appDataDir)) {
             New-Item -ItemType Directory -Force -Path $appDataDir | Out-Null
         }
-        Set-Content -Path "$appDataDir\\trace.log" -Value "This is a garbage log file left by the test app."
+        Set-Content -Path (Join-Path $appDataDir 'trace.log') -Value 'This is a garbage log file left by the test app.'
         
         # Create LocalAppData Dummy File
-        $localAppDataDir = "$env:LOCALAPPDATA\\${appName}"
+        $localAppDataDir = Join-Path $env:LOCALAPPDATA '${appName}'
         if (-not (Test-Path $localAppDataDir)) {
             New-Item -ItemType Directory -Force -Path $localAppDataDir | Out-Null
         }
-        Set-Content -Path "$localAppDataDir\\cache.txt" -Value "Garbage cache file."
+        Set-Content -Path (Join-Path $localAppDataDir 'cache.txt') -Value 'Garbage cache file.'
     `;
 
     exec(`powershell.exe -Command "& {${regCmd}}"`, (err) => {
