@@ -1,4 +1,4 @@
-﻿# BaÄŸÄ±mlÄ±lÄ±klar ve derleme dosyalarÄ±
+# BaÄŸÄ±mlÄ±lÄ±klar ve derleme dosyalarÄ±
 node_modules/
 dist/
 dist-electron/
@@ -10,3 +10,6 @@ obj/
 .vscode/
 .idea/
 .DS_Store
+
+# Test uygulaması (Sadece yerelde kalacak)
+voldena_test_app/

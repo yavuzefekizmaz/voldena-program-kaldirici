@@ -2,7 +2,7 @@
   "name": "voldena-uninstaller",
   "version": "1.0.0",
   "description": "Modern and clean uninstaller for Windows",
-  "main": "main.js",
+  "main": "js/main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder --win --x64"
@@ -19,6 +19,7 @@
       "oneClick": false,
       "perMachine": true,
       "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always",
       "artifactName": "Voldena-Uninstaller-Setup.${ext}"
     },
     "portable": {

@@ -36,10 +36,22 @@ const btnClearLog = document.getElementById('btn-clear-log');
 
 const modalSuccess = document.getElementById('modal-success');
 const btnCloseSuccess = document.getElementById('btn-close-success');
+const chkAutoStart = document.getElementById('chk-autostart');
 
 // Initialization
 document.addEventListener('DOMContentLoaded', () => {
     loadApps();
+    
+    // Initialize autostart checkbox
+    window.api.getAutoStart().then(enabled => {
+        chkAutoStart.checked = enabled;
+    }).catch(() => {});
+    
+    chkAutoStart.addEventListener('change', async (e) => {
+        try {
+            await window.api.toggleAutoStart(e.target.checked);
+        } catch(err) {}
+    });
 });
 
 // Tab Switching

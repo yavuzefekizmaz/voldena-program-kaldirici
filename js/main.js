@@ -33,7 +33,7 @@ function createWindow() {
     const win = new BrowserWindow({
         width: 1000,
         height: 750,
-        icon: path.join(__dirname, 'logo.png'),
+        icon: path.join(__dirname, '../logo.png'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: false,
@@ -47,7 +47,7 @@ function createWindow() {
         }
     });
 
-    win.loadFile('index.html');
+    win.loadFile(path.join(__dirname, '../index.html'));
 }
 
 app.whenReady().then(() => {
@@ -293,4 +293,18 @@ foreach ($p in $pathsToClean) {
             }
         });
     });
+});
+
+// IPC Handlers for Windows Start at Boot (AutoStart)
+ipcMain.handle('settings:toggleAutoStart', async (event, enable) => {
+    app.setLoginItemSettings({
+        openAtLogin: enable,
+        path: process.execPath,
+        args: []
+    });
+    return app.getLoginItemSettings().openAtLogin;
+});
+
+ipcMain.handle('settings:getAutoStart', async () => {
+    return app.getLoginItemSettings().openAtLogin;
 });
